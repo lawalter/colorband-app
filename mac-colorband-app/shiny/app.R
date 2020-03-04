@@ -1,13 +1,34 @@
+# license -----------------------------------------------------------------
+
+# MIT License
+# 
 # Copyright (c) 2020 L. Abigail Walter
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#   
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# intro -------------------------------------------------------------------
 
 # An example R Shiny script 
 # This app generates random bird band color combinations
 
 # libraries ---------------------------------------------------------------
 
-library(shiny)
-library(dplyr)
-library(tidyr)
 library(purrr)
 library(stringr)
 
@@ -37,7 +58,16 @@ ui <- fluidPage(
                                         "[W] White" = "W",
                                         "[K] Black" = "K", 
                                         "[E] Grey" = "E"),
-                         selected = c("X", "R", "O", "Y", "G", "B", "W"))
+                         selected = c("X", "R", "O", "Y", "G", "B", "W")),
+      
+      selectInput("location", 
+                  "Location", 
+                  choices = list("Washington, DC" = 1, 
+                                 "Pittsburgh, PA" = 2,
+                                 "Newark, DE" = 3,
+                                 "Tallahassee, FL" = 4,
+                                 "Providence, RI" = 5), 
+                  selected = 1)
     ),
 
     # Show a plot of the generated distribution:
