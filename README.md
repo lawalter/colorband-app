@@ -2,9 +2,11 @@
 
 An R Shiny Electron desktop app
 
-<b>Overview</b>: The user is able to generate all possible color band combinations after choosing which band colors are available to be used during banding.
+<b>Overview</b>: The user is able to generate all possible color band combinations using only their available color bands.
 
 *In progress*
+
+Notes: Currently trying to use <a href="https://github.com/trestletech/shinyStore">shinyStorage</a>
 
 ### Sources
 - R Shiny Electron template created by <a href="https://github.com/dirkschumacher/r-shiny-electron">Dirk Shumacher</a>
