@@ -1,0 +1,31 @@
+@import url("//fonts.googleapis.com/css?family=Lobster");
+@import url("//fonts.googleapis.com/css?family=Ubuntu");
+
+html {
+  font-family: Ubuntu;
+  line-height: 1.15;
+}
+
+body {
+  margin: 0;
+  font-family: Ubuntu, Roboto, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: #FFFFFF;
+}
+
+h1 { 
+  font-family: Lobster; 
+  font-size: 48; 
+  line-height: 1.1;
+  font-weight: 500; 
+  color: #ad1d28
+} 
+  
+h3 { 
+  font-family: Ubuntu; 
+  font-size: 14px; 
+  font-weight: 700; 
+  line-height: 15.4px
+  
+} 

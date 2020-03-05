@@ -30,21 +30,26 @@
 # libraries ---------------------------------------------------------------
 
 library(purrr)
-library(stringr)
+library(tidyverse)
+library(shinyWidgets)
 
 # ui ----------------------------------------------------------------------
 
 # Define UI for application:
 
-ui <- fluidPage(
+ui <- 
+  
+  fluidPage(
+  
+  # CSS
+  includeCSS('www/colorband-app.css'),
 
   # Application title:
-  titlePanel("Color Band Combination Generator"),
+  headerPanel("Color Band Combination Generator"),
 
   # Sidebar with input options:
   sidebarLayout(
     sidebarPanel(
-
       checkboxGroupInput("colorVector",
                          "Colors available:",
                          choices = list("[X] Aluminum" = "X",
@@ -61,19 +66,24 @@ ui <- fluidPage(
                          selected = c("X", "R", "O", "Y", "G", "B", "W")),
       
       selectInput("location", 
-                  "Location", 
+                  "Location:", 
                   choices = list("Washington, DC" = 1, 
                                  "Pittsburgh, PA" = 2,
                                  "Newark, DE" = 3,
                                  "Tallahassee, FL" = 4,
                                  "Providence, RI" = 5), 
-                  selected = 1)
-    ),
-
-    # Show a plot of the generated distribution:
+                  selected = 1)),
+    
+    # Main panel:
+    
     mainPanel(
-      verbatimTextOutput("colorVect"),
-      tableOutput("view")
+      h4("Colors chosen"),
+      verbatimTextOutput("colors"),
+      br(),
+      textOutput("combo_count"),
+      br(),
+      #tableOutput("combo_list"),
+      imageOutput("bg_image")
     )
   )
 )
@@ -82,41 +92,24 @@ ui <- fluidPage(
 
 # Define color combo function:
 
-get_colors <-
-  function(
-    colorVector,                # A vector of available color bands, coded
-    nBands = 4,                 # The number of bands
-    nPositions = nBands,        # The number of possible band positions
-    xPositions = 1:nPositions,  # The position of the X band, from LT to RB
-    nLeft = nPositions/2,       # The maximum number of bands on the left leg
-    nRight = nPositions/2       # The maximum number of bands on the right leg
-  ) {
-    map_dfc(
-      1:(nPositions/2),
-      function(x) {
-        x = colorVector
-      }) %>%
-      expand(!!! rlang::syms(names(.))) %>%
-      # Unite upper and lower bands:
-      unite('color', sep = '') %>%
+combo_generate <-
+  function(x) {
+    as_tibble(x) %>%
+      transmute(color = value) %>%
       # All potential combos of left and right legs:
-      expand(
-        left = color,
-        right = color) %>%
-        {if(!is.null(nLeft)) {
-          filter(., (str_count(left, '[A-Z]') == nLeft))
-        } else .} %>%
-        {if(!is.null(nRight)) {
-          filter(., (str_count(left, '[A-Z]') == nRight))
-        } else .} %>%
-      # Unite as a single expression:
+      expand(left = color,
+             right = color) %>%
       unite('color', sep = '') %>%
-      # Correct number of bands:
-      filter(str_count(color, '[A-Z]') == nBands) %>%
-      {if("X" %in% colorVector){
+      expand(left = color,
+             right = color) %>%
+      # Unite as a single column:
+      unite('color', sep = '') %>%
+      # Filter for correct number of bands:
+      filter(str_count(color, '[A-Z]') == 4) %>%
+      {if("X" %in% x){
         filter(
           .,
-          # Combos with one, and only one, aluminum:
+          # Keep combos with one, and only one, aluminum:
           str_count(.$color, 'X') == 1)
       } else .} %>%
       # Randomize output:
@@ -128,15 +121,28 @@ get_colors <-
 server <- function(input, output) {
 
   dataInput <- reactive({
-    get_colors(input$colorVector)
+    combo_generate(input$colorVector)
   })
+  
+  output$colors <- renderText(input$colorVector)
 
-  output$view <- renderTable({
-    dataInput()
-  })
-
-  output$colorVect <- renderText(input$colorVector)
-
+  output$combo_count <- renderText(
+    paste0('Total possibilities: ', nrow(combo_generate(input$colorVector))))
+  
+  output$combo_list <- 
+    renderTable({dataInput()},
+                bordered = TRUE,
+                hover = TRUE,
+                colnames = FALSE)
+  
+  output$bg_image <- renderImage({
+        # When input$location is 1, filename is ./www/image1.png
+        filename <- normalizePath(file.path('./www',
+                                  paste('image', input$location, '.png', sep='')))
+        # Return a list containing the filename
+            list(src = filename, height = 300)
+          }, deleteFile = FALSE)
+        
 }
 
 # run ---------------------------------------------------------------------
