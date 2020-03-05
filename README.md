@@ -6,6 +6,8 @@ An R Shiny Electron desktop app
 
 *In progress*
 
+Notes: Currently trying to use <a href="https://github.com/trestletech/shinyStore">shinyStorage</a>
+
 ### Sources
 - R Shiny Electron template created by <a href="https://github.com/dirkschumacher/r-shiny-electron">Dirk Shumacher</a>
 - Flag map state images sourced from Wikimedia Commons. No changes were made.
