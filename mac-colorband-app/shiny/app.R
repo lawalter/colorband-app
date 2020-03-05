@@ -29,9 +29,8 @@
 
 # libraries ---------------------------------------------------------------
 
-library(purrr)
 library(tidyverse)
-library(shinyWidgets)
+library(shinyStorage)
 
 # ui ----------------------------------------------------------------------
 
@@ -45,7 +44,10 @@ ui <-
   includeCSS('www/colorband-app.css'),
 
   # Application title:
-  headerPanel("Color Band Combination Generator"),
+  fluidRow(
+    column(
+      width = 10, 
+      tags$h1("Colorband Combination Generator"))),
 
   # Sidebar with input options:
   sidebarLayout(

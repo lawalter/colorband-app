@@ -50,10 +50,10 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "electron-cookie-save": "^1.0.2",
     "electron-squirrel-startup": "^1.0.0",
     "esm": "^3.2.25",
-    "execa": "^4.0.0"
+    "execa": "^4.0.0",
+    "pretty-checkbox": "^3.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

@@ -1,0 +1,31 @@
+Package: shinyStorage
+Type: Package
+Title: Cross-browser key-value store database to store data locally in
+        the browser.
+Version: 0.0.1
+Date: 2014-09-10
+Authors@R: "John Harrison <johndharrison0@gmail.com> [aut, cre]"
+URL: http://johndharrison.github.io/shinyStorage/
+BugReports: https://github.com/johndharrison/shinyStorage/issues
+Description: shinyStorage allows you to store data locally in the browser
+    within your shiny apps. It is an R wrapper for simpleStorage. simpleStorage
+    is a fork of jStorage that only includes the minimal set of features.
+    Basically it is a wrapper for native JSON + localStorage with some TTL
+    magic mixed in.
+Imports: shiny (>= 0.10.0)
+License: AGPL-3
+RemoteType: github
+RemoteHost: api.github.com
+RemoteRepo: shinyStorage
+RemoteUsername: johndharrison
+RemoteRef: master
+RemoteSha: 533efe5244402ba43e1b1ffb25366fb9efba0d25
+GithubRepo: shinyStorage
+GithubUsername: johndharrison
+GithubRef: master
+GithubSHA1: 533efe5244402ba43e1b1ffb25366fb9efba0d25
+NeedsCompilation: no
+Packaged: 2020-03-05 19:41:03 UTC; bsevans
+Author: "John Harrison" [aut, cre]
+Maintainer: "John Harrison" <johndharrison0@gmail.com>
+Built: R 3.6.2; ; 2020-03-05 19:41:04 UTC; unix

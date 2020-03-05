@@ -10,7 +10,9 @@ library(automagic)
 options(repos = "https://cloud.r-project.org")
 
 cran_pkgs <- setdiff(unique(c(
+  "devtools",
   "shiny",
+  "tidyverse",
   automagic::get_dependent_packages("shiny")
 )), "automagic")
 
@@ -19,6 +21,8 @@ install_bins <- function(cran_pkgs, library_path, type, decompress,
                                          "include", "unitTests",
                                          file.path("libs", "*dSYM"))) {
   
+devtools::install_github("johndharrison/shinyStorage")
+    
   installed <- list.files(library_path)
   cran_to_install <- sort(setdiff(
     unique(unlist(
