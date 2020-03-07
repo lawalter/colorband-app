@@ -9,27 +9,39 @@ library(automagic)
 
 options(repos = "https://cloud.r-project.org")
 
-cran_pkgs <- setdiff(unique(c(
-  "devtools",
-  "shiny",
-  "tidyverse",
-  automagic::get_dependent_packages("shiny")
-)), "automagic")
+cran_pkgs <- 
+  setdiff(
+    unique(
+      c("shiny",
+        automagic::get_dependent_packages("shiny"))), 
+    "automagic")
 
-install_bins <- function(cran_pkgs, library_path, type, decompress,
-                         remove_dirs = c("help", "doc", "tests", "html",
-                                         "include", "unitTests",
-                                         file.path("libs", "*dSYM"))) {
+install_bins <- 
+  function(
+    cran_pkgs, 
+    library_path, 
+    type, 
+    decompress,
+    remove_dirs = 
+      c("help", "doc", "tests", "html","include", "unitTests", 
+        file.path("libs", "*dSYM"))) {
+
+    devtools::install_github("trestletech/shinyStore")
   
-devtools::install_github("johndharrison/shinyStorage")
+    installed <- 
+      list.files(library_path)
     
-  installed <- list.files(library_path)
-  cran_to_install <- sort(setdiff(
-    unique(unlist(
-      c(cran_pkgs,
-        tools::package_dependencies(cran_pkgs, recursive=TRUE,
-                                    which= c("Depends", "Imports", "LinkingTo"))))),
-    installed))
+    cran_to_install <- 
+      sort(
+        setdiff(
+          unique(
+            unlist(
+              c(cran_pkgs,
+                tools::package_dependencies(
+                  cran_pkgs, recursive=TRUE, 
+                  which= c("Depends", "Imports", "LinkingTo"))))),
+          installed))
+    
   if(!length(cran_to_install)) {
     message("No packages to install")
   } else {
