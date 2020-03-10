@@ -4,6 +4,8 @@ An R Shiny Electron desktop app
 
 <b>Overview</b>: The user is able to generate all possible color band combinations using only their available color bands.
 
+![rhwo](/images/rhwo_square_big.png)
+
 *In progress*
 
 - R Shiny Electron template created by <a href="https://github.com/dirkschumacher/r-shiny-electron">Dirk Shumacher</a>
