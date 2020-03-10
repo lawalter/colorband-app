@@ -20,8 +20,6 @@ install_bins <- function(cran_pkgs, library_path, type, decompress,
                          remove_dirs = c("help", "doc", "tests", "html",
                                          "include", "unitTests",
                                          file.path("libs", "*dSYM"))) {
-  
-devtools::install_github("johndharrison/shinyStorage")
     
   installed <- list.files(library_path)
   cran_to_install <- sort(setdiff(

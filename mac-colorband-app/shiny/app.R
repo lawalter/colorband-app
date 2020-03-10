@@ -24,13 +24,15 @@
 
 # intro -------------------------------------------------------------------
 
-# An example R Shiny script 
-# This app generates random bird band color combinations
+# A BIRD BAND COLOR COMBINATION GENERATOR SHINY APP
+# Mar 2020
 
 # libraries ---------------------------------------------------------------
 
 library(tidyverse)
-library(shinyStorage)
+
+#devtools::install_github("trestletech/shinyStore", force = TRUE)
+library(shinyStore)
 
 # ui ----------------------------------------------------------------------
 
@@ -39,56 +41,56 @@ library(shinyStorage)
 ui <- 
   
   fluidPage(
+    
+    # CSS
+    includeCSS('www/colorband-app.css'),
   
-  # CSS
-  includeCSS('www/colorband-app.css'),
-
-  # Application title:
-  fluidRow(
-    column(
-      width = 10, 
-      tags$h1("Colorband Combination Generator"))),
-
-  # Sidebar with input options:
-  sidebarLayout(
-    sidebarPanel(
-      checkboxGroupInput("colorVector",
-                         "Colors available:",
-                         choices = list("[X] Aluminum" = "X",
-                                        "[R] Red" = "R", 
-                                        "[O] Orange" = "O",
-                                        "[Y] Yellow" = "Y", 
-                                        "[G] Green" = "G",
-                                        "[B] Blue" = "B", 
-                                        "[M] Purple" = "M",
-                                        "[P] Pink" = "P", 
-                                        "[W] White" = "W",
-                                        "[K] Black" = "K", 
-                                        "[E] Grey" = "E"),
-                         selected = c("X", "R", "O", "Y", "G", "B", "W")),
+    # Application title:
+    fluidRow(
+      column(
+        width = 10, 
+        tags$h1("Colorband Combination Generator"))),
+  
+    # Sidebar with input options:
+    sidebarLayout(
+      sidebarPanel(
+        checkboxGroupInput("colorVector",
+                           "Colors available:",
+                           choices = list("[X] Aluminum" = "X",
+                                          "[R] Red" = "R", 
+                                          "[O] Orange" = "O",
+                                          "[Y] Yellow" = "Y", 
+                                          "[G] Green" = "G",
+                                          "[B] Blue" = "B", 
+                                          "[M] Purple" = "M",
+                                          "[P] Pink" = "P", 
+                                          "[W] White" = "W",
+                                          "[K] Black" = "K", 
+                                          "[E] Grey" = "E"),
+                           selected = c("X", "R", "O", "Y", "G", "B", "W")),
+        
+        selectInput("location", 
+                    "Location:", 
+                    choices = list("Washington, DC" = 1, 
+                                   "Pittsburgh, PA" = 2,
+                                   "Newark, DE" = 3,
+                                   "Tallahassee, FL" = 4,
+                                   "Providence, RI" = 5), 
+                    selected = 1)),
       
-      selectInput("location", 
-                  "Location:", 
-                  choices = list("Washington, DC" = 1, 
-                                 "Pittsburgh, PA" = 2,
-                                 "Newark, DE" = 3,
-                                 "Tallahassee, FL" = 4,
-                                 "Providence, RI" = 5), 
-                  selected = 1)),
-    
-    # Main panel:
-    
-    mainPanel(
-      h4("Colors chosen"),
-      verbatimTextOutput("colors"),
-      br(),
-      textOutput("combo_count"),
-      br(),
-      #tableOutput("combo_list"),
-      imageOutput("bg_image")
+      # Main panel:
+      
+      mainPanel(
+        h4("Colors chosen"),
+        verbatimTextOutput("colors"),
+        br(),
+        textOutput("combo_count"),
+        br(),
+        #tableOutput("combo_list"),
+        imageOutput("bg_image"))
+      )
     )
-  )
-)
+
 
 # server ------------------------------------------------------------------
 
