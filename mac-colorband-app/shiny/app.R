@@ -83,7 +83,6 @@ ui <-
                                    "Pittsburgh, PA" = 4,
                                    "Providence, RI" = 5))),
       
-      
       # Main panel:
       
       mainPanel(
@@ -127,7 +126,7 @@ combo_generate <-
 
 # Define server logic:
 
-server <- function(input, output) {
+server <- function(input, output, session) {
   
   # Reactive:
   dataInput <- reactive({
@@ -148,36 +147,30 @@ server <- function(input, output) {
                 hover = TRUE,
                 colnames = FALSE)
   
-  # Load shinyStore info from previous session:
-  
-  # Image from location chosen:
+  # Use shinyStore to load image from location chosen:
   output$image <- 
     renderImage({
       # When input$location is 1, filename is ./www/image1.png
       filename <- 
         normalizePath(
           file.path(
-            './www', paste('image', input$location, '.png', sep='')))
+            './www', paste('image', isolate(input$store)$location, '.png', sep='')))
       # Return a list containing the filename
       list(src = filename, height = 275, class = 'shiny-image-output')}, 
       deleteFile = FALSE)
   
   # shinyStore contined:
-  # observe({
-  #   if (input$save <= 0){
-  #     # On initialization, set the value of the text editor to the current val.
-  #     updateSelectInput(
-  #       session, 
-  #       "location", 
-  #       value = isolate(input$store)$location)
-  #     
-  #     return()
-  #   }
-  #   updateStore(session, "location", isolate(input$location))
-  # })
+  observe({
+    x <- input$location
+    
+    updateSelectInput(
+      session,
+      "location",
+      selected = isolate(input$store)$location)
+
+    updateStore(session, "location", isolate(input$location))
+  })
   
-  
-        
 }
 
 # run ---------------------------------------------------------------------
@@ -185,6 +178,4 @@ server <- function(input, output) {
 # Run the application:
 
 shinyApp(ui = ui, server = server)
-
-
 
