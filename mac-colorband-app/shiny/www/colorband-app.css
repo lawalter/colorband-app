@@ -21,3 +21,9 @@ h1 {
   font-weight: 500; 
   color: #ad1d28
 } 
+
+.shiny-image-output {
+  display: block; 
+  margin-left: auto; 
+  margin-right: auto;
+}
