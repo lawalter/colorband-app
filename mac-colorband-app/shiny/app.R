@@ -42,7 +42,7 @@ ui <-
   
   fluidPage(
     
-    # CSS
+    # CSS:
     includeCSS('www/colorband-app.css'),
   
     # Application title:
@@ -54,6 +54,11 @@ ui <-
     # Sidebar with input options:
     sidebarLayout(
       sidebarPanel(
+        
+        # Initialize shinyStore:
+        initStore("store", "shinyStore-mac-app"),
+        
+        # Colors checkbox input:
         checkboxGroupInput("colorVector",
                            "Colors available:",
                            choices = list("[X] Aluminum" = "X",
@@ -69,14 +74,15 @@ ui <-
                                           "[E] Grey" = "E"),
                            selected = c("X", "R", "O", "Y", "G", "B", "W")),
         
+        # Location selection input:
         selectInput("location", 
                     "Location:", 
                     choices = list("Washington, DC" = 1, 
-                                   "Pittsburgh, PA" = 2,
-                                   "Newark, DE" = 3,
-                                   "Tallahassee, FL" = 4,
-                                   "Providence, RI" = 5), 
-                    selected = 1)),
+                                   "Newark, DE" = 2,
+                                   "Tallahassee, FL" = 3,
+                                   "Pittsburgh, PA" = 4,
+                                   "Providence, RI" = 5))),
+      
       
       # Main panel:
       
@@ -87,10 +93,9 @@ ui <-
         textOutput("combo_count"),
         br(),
         #tableOutput("combo_list"),
-        imageOutput("bg_image"))
+        imageOutput("image"))
       )
     )
-
 
 # server ------------------------------------------------------------------
 
@@ -123,29 +128,55 @@ combo_generate <-
 # Define server logic:
 
 server <- function(input, output) {
-
+  
+  # Reactive:
   dataInput <- reactive({
     combo_generate(input$colorVector)
   })
   
+  # Vector of colors chosen:
   output$colors <- renderText(input$colorVector)
 
+  # Number of possibilities:
   output$combo_count <- renderText(
     paste0('Total possibilities: ', nrow(combo_generate(input$colorVector))))
   
+  # All random combinations created from colors chosen:
   output$combo_list <- 
     renderTable({dataInput()},
                 bordered = TRUE,
                 hover = TRUE,
                 colnames = FALSE)
   
-  output$bg_image <- renderImage({
-        # When input$location is 1, filename is ./www/image1.png
-        filename <- normalizePath(file.path('./www',
-                                  paste('image', input$location, '.png', sep='')))
-        # Return a list containing the filename
-            list(src = filename, height = 300)
-          }, deleteFile = FALSE)
+  # Load shinyStore info from previous session:
+  
+  # Image from location chosen:
+  output$image <- 
+    renderImage({
+      # When input$location is 1, filename is ./www/image1.png
+      filename <- 
+        normalizePath(
+          file.path(
+            './www', paste('image', input$location, '.png', sep='')))
+      # Return a list containing the filename
+      list(src = filename, height = 275, class = 'shiny-image-output')}, 
+      deleteFile = FALSE)
+  
+  # shinyStore contined:
+  # observe({
+  #   if (input$save <= 0){
+  #     # On initialization, set the value of the text editor to the current val.
+  #     updateSelectInput(
+  #       session, 
+  #       "location", 
+  #       value = isolate(input$store)$location)
+  #     
+  #     return()
+  #   }
+  #   updateStore(session, "location", isolate(input$location))
+  # })
+  
+  
         
 }
 
@@ -154,4 +185,6 @@ server <- function(input, output) {
 # Run the application:
 
 shinyApp(ui = ui, server = server)
+
+
 
