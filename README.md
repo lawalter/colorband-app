@@ -9,7 +9,7 @@ Users are able to generate all possible 4-band combinations using only their ava
 *Completed March 11, 2020*
 
 ### Usage
-- Available to run in R or as a macOS desktop app with Electron
+- Able to run in R or as a macOS desktop app with Electron
     - The R Shiny version is located at shiny/app.R
     - To open the Electron desktop app, go to out/colorband.app
     
