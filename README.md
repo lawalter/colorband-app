@@ -2,7 +2,7 @@
 
 An R Shiny Electron desktop app
 
-<b>Overview</b>: Users are able to generate all possible 4-band combinations using only their available color bands.
+Users are able to generate all possible 4-band combinations using only their available color bands.
 
 ![rhwo](/images/rhwo_transparent.png) ![screenshot](/images/app_img_m.png)
 
@@ -12,13 +12,14 @@ An R Shiny Electron desktop app
 - Available to run in R or as a macOS desktop app with Electron
     - The R Shiny version is located at shiny/app.R
     - To open the Electron desktop app, go to out/colorband.app
-- Select the colorbands available at your banding station
-- If desired, choose your location from the drop-down
-- Save settings by clicking "Save choices"
+    
+1. Select the colorbands available at your banding station
+2. If desired, choose your location from the drop-down
+3. Save settings by clicking "Save choices"
     - Your selected colors and location will be remembered if the Shiny app is reloaded or refreshed
-- A random band combination will appear in the main panel
+4. A random band combination will appear in the main panel
     - To generate a new random combination, hit the refresh button
-- To download a complete list of all possible combinations, arranged in random order, click the "Download full .csv" button
+5. To download a complete list of all possible combinations, click the "Download full .csv" button
 
 ## Notes
 - R Shiny Electron template created by <a href="https://github.com/dirkschumacher/r-shiny-electron">Dirk Shumacher</a>
