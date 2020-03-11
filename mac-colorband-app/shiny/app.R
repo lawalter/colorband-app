@@ -44,13 +44,13 @@ ui <-
     
     # CSS:
     includeCSS('www/colorband-app.css'),
-  
+    
     # Application title:
     fluidRow(
       column(
         width = 10, 
         tags$h1("Colorband Combination Generator"))),
-  
+    
     # Sidebar with input options:
     sidebarLayout(
       sidebarPanel(
@@ -72,7 +72,7 @@ ui <-
                                           "[W] White" = "W",
                                           "[K] Black" = "K", 
                                           "[E] Grey" = "E"),
-                           selected = c("X", "R", "O", "Y", "G", "B", "W")),
+                           selected = c("X")),
         
         # Location selection input:
         selectInput("location", 
@@ -81,7 +81,10 @@ ui <-
                                    "Newark, DE" = 2,
                                    "Tallahassee, FL" = 3,
                                    "Pittsburgh, PA" = 4,
-                                   "Providence, RI" = 5))),
+                                   "Providence, RI" = 5)),
+        
+        actionButton("go", "Go!", 
+                     icon("crow", lib = "font-awesome"))),
       
       # Main panel:
       
@@ -93,8 +96,8 @@ ui <-
         br(),
         #tableOutput("combo_list"),
         imageOutput("image"))
-      )
     )
+  )
 
 # server ------------------------------------------------------------------
 
@@ -128,6 +131,13 @@ combo_generate <-
 
 server <- function(input, output, session) {
   
+  # EXAMPLE
+  # output$distPlot <- renderPlot({
+  #   input$goButton # dependency
+  #   dist <- isolate(rnorm(input$obs))  # isolate() to nix d on input$obs
+  #   hist(dist)
+  # })
+  
   # Reactive:
   dataInput <- reactive({
     combo_generate(input$colorVector)
@@ -135,10 +145,12 @@ server <- function(input, output, session) {
   
   # Vector of colors chosen:
   output$colors <- renderText(input$colorVector)
-
+  
   # Number of possibilities:
-  output$combo_count <- renderText(
-    paste0('Total possibilities: ', nrow(combo_generate(input$colorVector))))
+  output$combo_count <- renderText({
+    input$go
+    paste0('Total possibilities: ', 
+           nrow(combo_generate(input$colorVector)))})
   
   # All random combinations created from colors chosen:
   output$combo_list <- 
@@ -147,28 +159,29 @@ server <- function(input, output, session) {
                 hover = TRUE,
                 colnames = FALSE)
   
-  # Use shinyStore to load image from location chosen:
+  # Load image from location chosen:
   output$image <- 
     renderImage({
       # When input$location is 1, filename is ./www/image1.png
       filename <- 
         normalizePath(
           file.path(
-            './www', paste('image', isolate(input$store)$location, '.png', sep='')))
+            './www', paste('image', input$location, '.png', sep='')))
       # Return a list containing the filename
       list(src = filename, height = 275, class = 'shiny-image-output')}, 
       deleteFile = FALSE)
   
-  # shinyStore contined:
+  # Memory using shinyStore for color checkbox input
   observe({
-    x <- input$location
-    
-    updateSelectInput(
-      session,
-      "location",
-      selected = isolate(input$store)$location)
-
-    updateStore(session, "location", isolate(input$location))
+    if (input$go <= 0){
+      # On initialization, set the values of the checkbox group
+      # to the saved values.
+      updateCheckboxInput(session, "colorVector", 
+                          value=isolate(input$store)$colorVector)
+      
+      return()
+    }
+    updateStore(session, "colorVector", isolate(input$colorVector))
   })
   
 }
@@ -178,4 +191,3 @@ server <- function(input, output, session) {
 # Run the application:
 
 shinyApp(ui = ui, server = server)
-
