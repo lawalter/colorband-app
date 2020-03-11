@@ -83,7 +83,7 @@ ui <-
                                    "Pittsburgh, PA" = 4,
                                    "Providence, RI" = 5)),
         
-        actionButton("go", "Go!", 
+        actionButton("go", "Save choices", 
                      icon("crow", lib = "font-awesome"))),
       
       # Main panel:
@@ -92,9 +92,16 @@ ui <-
         h4("Colors chosen"),
         verbatimTextOutput("colors"),
         br(),
+        h4("Random combination"),
+        tableOutput("combo_list"), 
+        actionButton("refresh", icon("refresh")),
+        br(), 
+        br(),
         textOutput("combo_count"),
         br(),
-        #tableOutput("combo_list"),
+        downloadButton("downloadData", "Download full .csv"),
+        br(),
+        br(),
         imageOutput("image"))
     )
   )
@@ -131,13 +138,6 @@ combo_generate <-
 
 server <- function(input, output, session) {
   
-  # EXAMPLE
-  # output$distPlot <- renderPlot({
-  #   input$goButton # dependency
-  #   dist <- isolate(rnorm(input$obs))  # isolate() to nix d on input$obs
-  #   hist(dist)
-  # })
-  
   # Reactive:
   dataInput <- reactive({
     combo_generate(input$colorVector)
@@ -146,18 +146,25 @@ server <- function(input, output, session) {
   # Vector of colors chosen:
   output$colors <- renderText(input$colorVector)
   
+  # One random combination created from colors chosen:
+  output$combo_list <-
+    renderTable({head(dataInput(), n = 1)},
+                bordered = TRUE,
+                hover = FALSE,
+                colnames = FALSE)
+  
   # Number of possibilities:
   output$combo_count <- renderText({
-    input$go
     paste0('Total possibilities: ', 
            nrow(combo_generate(input$colorVector)))})
   
-  # All random combinations created from colors chosen:
-  output$combo_list <- 
-    renderTable({dataInput()},
-                bordered = TRUE,
-                hover = TRUE,
-                colnames = FALSE)
+  # All random combinations in a download-friendly format:
+  combo_list_csv <- reactive({dataInput()})
+  
+  # Download handler:
+  output$downloadData <- downloadHandler(
+    filename = paste0("colorband_list-", Sys.Date(), ".csv"),
+    content = function(file){write.csv(combo_list_csv(), file)})
   
   # Load image from location chosen:
   output$image <- 
@@ -168,20 +175,23 @@ server <- function(input, output, session) {
           file.path(
             './www', paste('image', input$location, '.png', sep='')))
       # Return a list containing the filename
-      list(src = filename, height = 275, class = 'shiny-image-output')}, 
+      list(src = filename, height = 200, class = 'shiny-image-output')}, 
       deleteFile = FALSE)
   
-  # Memory using shinyStore for color checkbox input
+  # Memory using shinyStore for color checkbox input:
   observe({
     if (input$go <= 0){
       # On initialization, set the values of the checkbox group
       # to the saved values.
       updateCheckboxInput(session, "colorVector", 
-                          value=isolate(input$store)$colorVector)
+                          value = isolate(input$store)$colorVector)
+      updateSelectInput(session, "location",
+                        selected = isolate(input$store)$location)
       
       return()
     }
     updateStore(session, "colorVector", isolate(input$colorVector))
+    updateStore(session, "location", isolate(input$location))
   })
   
 }
@@ -191,3 +201,4 @@ server <- function(input, output, session) {
 # Run the application:
 
 shinyApp(ui = ui, server = server)
+
