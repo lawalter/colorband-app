@@ -2,15 +2,28 @@
 
 An R Shiny Electron desktop app
 
-<b>Overview</b>: The user is able to generate all possible color band combinations using only their available color bands.
+<b>Overview</b>: Users are able to generate all possible 4-band combinations using only their available color bands.
 
-![rhwo](/images/rhwo_square_big.png)
+![rhwo](/images/rhwo_transparent.png) ![screenshot](/images/app_img_m.png)
 
-*In progress*
+*Completed March 11, 2020*
 
+### Usage
+- Available to run in R or as a macOS desktop app with Electron
+    - The R Shiny version is located at shiny/app.R
+    - To open the Electron desktop app, go to out/colorband.app
+- Select the colorbands available at your banding station
+- If desired, choose your location from the drop-down
+- Save settings by clicking "Save choices"
+    - Your selected colors and location will be remembered if the Shiny app is reloaded or refreshed
+- A random band combination will appear in the main panel
+    - To generate a new random combination, hit the refresh button
+- To download a complete list of all possible combinations, arranged in random order, click the "Download full .csv" button
+
+## Notes
 - R Shiny Electron template created by <a href="https://github.com/dirkschumacher/r-shiny-electron">Dirk Shumacher</a>
-    - Check out <a href="https://github.com/lawalter/r-shiny-electron-app">my app setup guide</a> using that template
-- This app uses <a href="https://github.com/trestletech/shinyStore">shinyStore</a>
+    - Check out <a href="https://github.com/lawalter/r-shiny-electron-app">my app setup guide</a> using the above template
+- This app uses <a href="https://github.com/trestletech/shinyStore">shinyStore</a> to remember your chosen settings
 
 ### Sources
 - Flag map state images sourced from Wikimedia Commons. No changes were made.
