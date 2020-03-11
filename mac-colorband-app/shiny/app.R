@@ -89,14 +89,14 @@ ui <-
       # Main panel:
       
       mainPanel(
-        h4("Colors chosen"),
-        verbatimTextOutput("colors"),
-        br(),
-        h4("Random combination"),
-        tableOutput("combo_list"), 
-        actionButton("refresh", icon("refresh")),
-        br(), 
-        br(),
+        #h4("Colors chosen"),
+        #verbatimTextOutput("colors"),
+        #br(),
+        h4("Random combo:"),
+        fluidRow(
+          column(width = 2, tableOutput("combo_list")),
+          column(width = 1, actionButton("refresh", icon("refresh")))),
+        #br(),
         textOutput("combo_count"),
         br(),
         downloadButton("downloadData", "Download full .csv"),
@@ -148,10 +148,12 @@ server <- function(input, output, session) {
   
   # One random combination created from colors chosen:
   output$combo_list <-
-    renderTable({head(dataInput(), n = 1)},
-                bordered = TRUE,
-                hover = FALSE,
-                colnames = FALSE)
+    renderTable({dataInput() %>% 
+        slice(input$refresh + 1)},
+        bordered = FALSE,
+        striped = FALSE,
+        hover = FALSE,
+        colnames = FALSE)
   
   # Number of possibilities:
   output$combo_count <- renderText({

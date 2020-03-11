@@ -27,3 +27,10 @@ h1 {
   margin-left: auto; 
   margin-right: auto;
 }
+
+.shiny-html-output {
+  text-align: center;
+  font-family: monospace;
+  font-size: 21px;
+  color: #000000;
+}
