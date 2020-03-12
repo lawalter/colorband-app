@@ -1,6 +1,6 @@
 # Colorband Combination Generator
 
-An R Shiny Electron desktop app
+### An R Shiny Electron desktop app
 
 Users are able to generate all possible 4-band combinations using only their available color bands.
 
