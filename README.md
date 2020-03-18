@@ -10,7 +10,7 @@ Users are able to generate all possible 4-band combinations using only their ava
 
 ### Setup
 - The app is able to run in R or as a macOS desktop app with Electron
-    - The R Shiny version is located at colorband/shiny/app.R
+    - The R Shiny version: colorband/shiny/app.R
     - To package and run as a macOS R Shiny Electron desktop app:
         - Make sure you have all dependencies installed (described in <a href="https://github.com/lawalter/r-shiny-electron-app">my setup guide</a>)
         - In the R terminal, run `cd colorband`
