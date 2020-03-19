@@ -20,7 +20,7 @@ You have three avenues of running this app:
     - Run `electron-forge start` to see if the app works
     - And finally, run `electron-forge make` to package the app, now available to you in the out/ folder
 
-### How to use the generator
+### Using the generator
 1. Select the colorbands available at your banding station
 2. If desired, choose your location from the drop-down
 3. Save settings by clicking "Save choices"
@@ -34,7 +34,7 @@ You have three avenues of running this app:
 - This app uses <a href="https://github.com/trestletech/shinyStore">shinyStore</a> to remember your chosen settings
 - R Shiny Electron template created by <a href="https://github.com/dirkschumacher/r-shiny-electron">Dirk Shumacher</a>
     - Check out <a href="https://github.com/lawalter/r-shiny-electron-app">my app setup guide</a> using that template
-- Flag map state images sourced from Wikimedia Commons. No changes were made.
+- Flag map state images sourced from Wikimedia Commons (no changes were made)
     - <a href = "https://commons.wikimedia.org/wiki/File:Flag-map_of_Delaware.svg">Delaware</a> <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">[license]</a>
     - <a href = "https://commons.wikimedia.org/wiki/File:Flag-map_of_Florida.svg">Florida</a> <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">[license]</a>
     - <a href = "https://commons.wikimedia.org/wiki/File:Flag-map_of_Pennsylvania.svg">Pennsylvania</a> <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">[license]</a>
