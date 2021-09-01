@@ -74,15 +74,6 @@ ui <-
                                           "[E] Grey" = "E"),
                            selected = c("X")),
         
-        # Location selection input:
-        selectInput("location", 
-                    "Location:", 
-                    choices = list("Washington, DC" = 1, 
-                                   "Newark, DE" = 2,
-                                   "Tallahassee, FL" = 3,
-                                   "Pittsburgh, PA" = 4,
-                                   "Providence, RI" = 5)),
-        
         actionButton("go", "Save choices", 
                      icon("crow", lib = "font-awesome"))),
       
@@ -167,33 +158,17 @@ server <- function(input, output, session) {
   output$downloadData <- downloadHandler(
     filename = paste0("colorband_list-", Sys.Date(), ".csv"),
     content = function(file){write.csv(combo_list_csv(), file)})
-  
-  # Load image from location chosen:
-  output$image <- 
-    renderImage({
-      # When input$location is 1, filename is ./www/image1.png
-      filename <- 
-        normalizePath(
-          file.path(
-            './www', paste('image', input$location, '.png', sep='')))
-      # Return a list containing the filename
-      list(src = filename, height = 200, class = 'shiny-image-output')}, 
-      deleteFile = FALSE)
-  
+    
   # Memory using shinyStore for color checkbox input:
   observe({
     if (input$go <= 0){
       # On initialization, set the values of the checkbox group
       # to the saved values.
       updateCheckboxInput(session, "colorVector", 
-                          value = isolate(input$store)$colorVector)
-      updateSelectInput(session, "location",
-                        selected = isolate(input$store)$location)
-      
+                          value = isolate(input$store)$colorVector)    
       return()
     }
     updateStore(session, "colorVector", isolate(input$colorVector))
-    updateStore(session, "location", isolate(input$location))
   })
   
 }
